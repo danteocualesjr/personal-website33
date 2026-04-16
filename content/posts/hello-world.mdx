@@ -1,0 +1,41 @@
+---
+title: "Hello, world"
+description: "A first post to show how the blog works and how to write new entries."
+date: "2025-01-15"
+tags: ["meta", "writing"]
+---
+
+Welcome to the blog. This post is a quick tour of how things are set up so you
+can start writing your own.
+
+## Writing new posts
+
+Every post lives in `content/posts` as an `.mdx` file. Each file starts with a
+small frontmatter block:
+
+```md
+---
+title: "Your title here"
+description: "A one-sentence summary."
+date: "2025-01-15"
+tags: ["thoughts", "engineering"]
+---
+```
+
+After the frontmatter, write whatever you want in markdown. You can use headings,
+**bold**, *italics*, [links](https://example.com), lists, and code:
+
+```ts
+function greet(name: string) {
+  return `Hello, ${name}!`;
+}
+```
+
+## Why this setup?
+
+- **Local and portable** — your posts live in git alongside the site.
+- **Fast** — everything renders statically at build time.
+- **Flexible** — drop in React components inside MDX whenever you need more
+  than plain markdown.
+
+Happy writing.

@@ -1,0 +1,85 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { navLinks, siteConfig } from "@/content/site";
+import { ThemeSwitcher } from "./ThemeSwitcher";
+
+export function Navbar() {
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <Link
+          href="/"
+          className="text-sm font-semibold tracking-tight hover:opacity-80"
+        >
+          {siteConfig.name}
+        </Link>
+
+        <nav className="hidden items-center gap-6 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`text-sm transition-colors ${
+                isActive(link.href)
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <ThemeSwitcher />
+          <button
+            type="button"
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen((v) => !v)}
+            className="inline-flex items-center justify-center rounded-md border border-border p-1.5 md:hidden"
+          >
+            {mobileOpen ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Menu className="h-4 w-4" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {mobileOpen && (
+        <nav className="border-t border-border bg-background md:hidden">
+          <div className="mx-auto flex max-w-5xl flex-col px-6 py-3">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className={`py-2 text-sm ${
+                  isActive(link.href)
+                    ? "text-foreground"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </nav>
+      )}
+    </header>
+  );
+}
