@@ -9,6 +9,7 @@ import { getAllPosts } from "@/lib/posts";
 
 export default async function HomePage() {
   const featured = siteConfig.projects.filter((p) => p.featured).slice(0, 3);
+  
   const posts = (await getAllPosts()).slice(0, 3);
 
   return (
