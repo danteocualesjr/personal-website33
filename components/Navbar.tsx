@@ -28,7 +28,7 @@ export function Navbar() {
           {siteConfig.name}
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => {
             const active = isActive(link.href);
             return (
@@ -52,8 +52,9 @@ export function Navbar() {
           <ThemeSwitcher />
           <button
             type="button"
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
             onClick={() => setMobileOpen((v) => !v)}
             className="inline-flex items-center justify-center rounded-md border border-border p-1.5 md:hidden"
           >
@@ -67,7 +68,11 @@ export function Navbar() {
       </div>
 
       {mobileOpen && (
-        <nav className="border-t border-border bg-background md:hidden">
+        <nav
+          id="mobile-nav"
+          aria-label="Mobile"
+          className="border-t border-border bg-background md:hidden"
+        >
           <div className="mx-auto flex max-w-5xl flex-col px-6 py-3">
             {navLinks.map((link) => {
               const active = isActive(link.href);
