@@ -169,3 +169,91 @@ button {
   content: "$ ";
   color: var(--accent);
 }
+
+/* -----------------------------------------------------------------------------
+ * Code blocks (rehype-pretty-code / shiki output)
+ * ---------------------------------------------------------------------------*/
+
+/* Inline code: keep themed via prose vars but add subtle pill styling */
+.prose :where(code):not(:where(pre code)) {
+  background-color: var(--muted);
+  color: var(--foreground);
+  padding: 0.15em 0.4em;
+  border-radius: 0.3rem;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+.prose :where(code):not(:where(pre code))::before,
+.prose :where(code):not(:where(pre code))::after {
+  content: "";
+}
+
+/* Block code: shiki injects its own background; neutralize prose defaults */
+.prose :where(pre) {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+}
+
+.prose figure[data-rehype-pretty-code-figure] {
+  margin: 1.5rem 0;
+  border-radius: 0.65rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #22272e; /* matches github-dark-dimmed */
+}
+
+.prose figure[data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  padding: 1rem 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.prose figure[data-rehype-pretty-code-figure] pre > code {
+  display: grid;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-weight: inherit;
+  font-size: inherit;
+  counter-reset: line;
+}
+
+.prose figure[data-rehype-pretty-code-figure] pre > code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 2rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: rgba(173, 186, 199, 0.35);
+}
+
+.prose figure[data-rehype-pretty-code-figure] [data-line] {
+  padding: 0 1.25rem;
+  border-left: 2px solid transparent;
+}
+
+.prose figure[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  background-color: rgba(99, 110, 123, 0.2);
+  border-left-color: rgba(173, 186, 199, 0.5);
+}
+
+.prose figure[data-rehype-pretty-code-figure] [data-highlighted-chars] {
+  background-color: rgba(99, 110, 123, 0.25);
+  border-radius: 0.2rem;
+  padding: 0.1em 0.2em;
+}
+
+.prose figure[data-rehype-pretty-code-figure] [data-rehype-pretty-code-title] {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #adbac7;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: var(--font-mono);
+}

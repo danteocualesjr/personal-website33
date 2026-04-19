@@ -3,9 +3,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypePrettyCode, {
+  type Options as RehypePrettyCodeOptions,
+} from "rehype-pretty-code";
 import { Container } from "@/components/Container";
 import { PageTransition } from "@/components/PageTransition";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
+
+const prettyCodeOptions: RehypePrettyCodeOptions = {
+  theme: "github-dark-dimmed",
+  keepBackground: true,
+  defaultLang: "plaintext",
+};
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -81,7 +90,14 @@ export default async function PostPage({
         </header>
 
         <article className="prose mt-8 max-w-none">
-          <MDXRemote source={post.content} />
+          <MDXRemote
+            source={post.content}
+            options={{
+              mdxOptions: {
+                rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+              },
+            }}
+          />
         </article>
       </Container>
     </PageTransition>
