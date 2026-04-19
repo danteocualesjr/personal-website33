@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.metadata.description,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: siteConfig.metadata.title,
     description: siteConfig.metadata.description,
@@ -39,6 +42,22 @@ export const metadata: Metadata = {
   },
 };
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: siteConfig.name,
+  jobTitle: siteConfig.role,
+  description: siteConfig.shortBio,
+  url: siteConfig.metadata.url,
+  email: `mailto:${siteConfig.email}`,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: siteConfig.location,
+  },
+  sameAs: siteConfig.socials.map((s) => s.href),
+  knowsAbout: siteConfig.skills,
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -51,6 +70,10 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body className="flex min-h-screen flex-col" suppressHydrationWarning>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <ThemeProvider>
           <Navbar />
           <main className="flex-1 py-12">{children}</main>
