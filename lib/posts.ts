@@ -8,6 +8,7 @@ export type PostMeta = {
   description: string;
   date: string;
   tags?: string[];
+  readingTimeMinutes: number;
 };
 
 export type Post = PostMeta & {
@@ -15,6 +16,28 @@ export type Post = PostMeta & {
 };
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
+
+const WORDS_PER_MINUTE = 225;
+
+function countWords(text: string): number {
+  const stripped = text
+    // Drop fenced code blocks
+    .replace(/```[\s\S]*?```/g, " ")
+    // Drop inline code
+    .replace(/`[^`]*`/g, " ")
+    // Drop HTML/MDX tags
+    .replace(/<[^>]+>/g, " ")
+    // Drop markdown link/image syntax, keep link text
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1");
+  const words = stripped.match(/\b[\w'-]+\b/g);
+  return words ? words.length : 0;
+}
+
+function estimateReadingTime(content: string): number {
+  const words = countWords(content);
+  if (words === 0) return 1;
+  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
+}
 
 async function readPostFiles(): Promise<string[]> {
   try {
@@ -31,7 +54,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
     files.map(async (file) => {
       const fullPath = path.join(POSTS_DIR, file);
       const raw = await fs.readFile(fullPath, "utf8");
-      const { data } = matter(raw);
+      const { data, content } = matter(raw);
       const slug = file.replace(/\.(mdx|md)$/, "");
       return {
         slug,
@@ -39,6 +62,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
         description: (data.description as string) ?? "",
         date: (data.date as string) ?? new Date().toISOString(),
         tags: (data.tags as string[]) ?? [],
+        readingTimeMinutes: estimateReadingTime(content),
       } satisfies PostMeta;
     })
   );
@@ -61,6 +85,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     description: (data.description as string) ?? "",
     date: (data.date as string) ?? new Date().toISOString(),
     tags: (data.tags as string[]) ?? [],
+    readingTimeMinutes: estimateReadingTime(content),
     content,
   };
 }

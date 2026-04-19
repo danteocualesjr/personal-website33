@@ -47,16 +47,17 @@ export default async function PostPage({
         </Link>
 
         <header className="mt-6 border-b border-border pb-6">
-          <time
-            dateTime={post.date}
-            className="text-xs uppercase tracking-widest text-muted-foreground"
-          >
-            {new Date(post.date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </time>
+          <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
+            <time dateTime={post.date}>
+              {new Date(post.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+            <span aria-hidden="true">·</span>
+            <span>{post.readingTimeMinutes} min read</span>
+          </div>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight">
             {post.title}
           </h1>
@@ -64,6 +65,18 @@ export default async function PostPage({
             <p className="mt-3 text-lg text-muted-foreground">
               {post.description}
             </p>
+          )}
+          {post.tags && post.tags.length > 0 && (
+            <ul className="mt-5 flex flex-wrap gap-1.5">
+              {post.tags.map((tag) => (
+                <li
+                  key={tag}
+                  className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground"
+                >
+                  {tag}
+                </li>
+              ))}
+            </ul>
           )}
         </header>
 
