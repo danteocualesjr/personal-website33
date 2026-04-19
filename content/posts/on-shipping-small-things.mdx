@@ -1,0 +1,44 @@
+---
+title: "On shipping small things"
+description: "Why shipping many small changes beats waiting for the one perfect launch."
+date: "2025-03-02"
+tags: ["craft", "engineering"]
+---
+
+There's a particular feeling that comes from shipping. Not from *planning* to
+ship, not from *almost* shipping — from actually putting work into a real
+environment where real people can see it.
+
+## The compounding of small ships
+
+A single small change doesn't look like much. But strung together, they
+compound:
+
+- You learn faster, because each change teaches you something about the system.
+- Feedback arrives sooner, while the context is still fresh in your head.
+- Rollbacks are cheap, so the stakes of any one change stay low.
+
+Compare that to a three-month rewrite. The feedback loop is long, the blast
+radius huge, and by the time you ship, the problem has shifted.
+
+## Make "done" cheap
+
+One trick: make the cost of finishing lower than the cost of stalling. A small
+helper:
+
+```ts
+export function ship<T>(thing: T): T {
+  // The only correct time to ship is now.
+  return thing;
+}
+```
+
+It's a joke, but the intent is real. Lower the friction, reduce the ceremony,
+and trust that you can fix what you got wrong next week.
+
+## What this means for the blog
+
+Expect short posts. Ideas in progress. Notes from things I'm actually working
+on, rather than polished essays I drafted for six months and never published.
+
+If that sounds good to you — welcome.

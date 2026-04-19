@@ -71,6 +71,20 @@ export async function getAllPosts(): Promise<PostMeta[]> {
   );
 }
 
+export async function getAdjacentPosts(slug: string): Promise<{
+  prev: PostMeta | null;
+  next: PostMeta | null;
+}> {
+  const posts = await getAllPosts();
+  const index = posts.findIndex((p) => p.slug === slug);
+  if (index === -1) return { prev: null, next: null };
+  // Posts are sorted newest-first: older post is at a larger index.
+  return {
+    prev: posts[index + 1] ?? null,
+    next: posts[index - 1] ?? null,
+  };
+}
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   const files = await readPostFiles();
   const file = files.find((f) => f.replace(/\.(mdx|md)$/, "") === slug);

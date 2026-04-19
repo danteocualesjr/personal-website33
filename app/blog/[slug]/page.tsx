@@ -8,7 +8,8 @@ import rehypePrettyCode, {
 } from "rehype-pretty-code";
 import { Container } from "@/components/Container";
 import { PageTransition } from "@/components/PageTransition";
-import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { PostNav } from "@/components/PostNav";
+import { getAdjacentPosts, getAllPosts, getPostBySlug } from "@/lib/posts";
 
 const prettyCodeOptions: RehypePrettyCodeOptions = {
   theme: "github-dark-dimmed",
@@ -43,6 +44,7 @@ export default async function PostPage({
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) notFound();
+  const { prev, next } = await getAdjacentPosts(slug);
 
   return (
     <PageTransition>
@@ -99,6 +101,8 @@ export default async function PostPage({
             }}
           />
         </article>
+
+        <PostNav prev={prev} next={next} />
       </Container>
     </PageTransition>
   );
