@@ -1,3 +1,4 @@
+import { Rss } from "lucide-react";
 import { siteConfig } from "@/content/site";
 import { FooterYear } from "./FooterYear";
 
@@ -8,7 +9,7 @@ export function Footer() {
         <p>
           &copy; <FooterYear /> {siteConfig.name}. All rights reserved.
         </p>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           {siteConfig.socials.map((s) => (
             <a
               key={s.href}
@@ -20,6 +21,14 @@ export function Footer() {
               {s.label}
             </a>
           ))}
+          <a
+            href="/feed.xml"
+            className="inline-flex items-center gap-1.5 hover:text-foreground"
+            aria-label="Subscribe via RSS"
+          >
+            <Rss className="h-3.5 w-3.5" />
+            <span>RSS</span>
+          </a>
         </div>
       </div>
     </footer>
