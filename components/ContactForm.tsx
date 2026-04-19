@@ -14,7 +14,12 @@ export function ContactForm({ email }: { email: string }) {
     const body = encodeURIComponent(
       `${message}\n\n— ${name}${from ? ` (${from})` : ""}`
     );
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${encodeURIComponent(
+      email
+    )}?subject=${subject}&body=${body}`;
+    setName("");
+    setFrom("");
+    setMessage("");
   };
 
   return (
@@ -24,6 +29,8 @@ export function ContactForm({ email }: { email: string }) {
           <span className="mb-1 block text-sm font-medium">Name</span>
           <input
             type="text"
+            name="name"
+            autoComplete="name"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -34,6 +41,8 @@ export function ContactForm({ email }: { email: string }) {
           <span className="mb-1 block text-sm font-medium">Your email</span>
           <input
             type="email"
+            name="email"
+            autoComplete="email"
             required
             value={from}
             onChange={(e) => setFrom(e.target.value)}
@@ -44,6 +53,7 @@ export function ContactForm({ email }: { email: string }) {
       <label className="block">
         <span className="mb-1 block text-sm font-medium">Message</span>
         <textarea
+          name="message"
           required
           rows={6}
           value={message}

@@ -67,7 +67,7 @@ export default async function PostPage({
           )}
         </header>
 
-        <article className="prose prose-neutral mt-8 max-w-none">
+        <article className="prose mt-8 max-w-none">
           <MDXRemote source={post.content} />
         </article>
       </Container>
