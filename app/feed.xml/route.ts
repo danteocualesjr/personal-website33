@@ -1,5 +1,5 @@
 import { siteConfig } from "@/content/site";
-import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { getAllPostsWithContent } from "@/lib/posts";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -13,23 +13,37 @@ function escapeXml(value: string): string {
     .replace(/'/g, "&apos;");
 }
 
+function stripMarkdown(value: string): string {
+  return value
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/[#>*_~\-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildFeedSummary(description: string, content: string): string {
+  const source = description || content;
+  const clean = stripMarkdown(source);
+  if (!clean) return "";
+  return clean.length <= 280 ? clean : `${clean.slice(0, 277)}...`;
+}
+
 export async function GET() {
   const base = siteConfig.metadata.url.replace(/\/$/, "");
-  const posts = await getAllPosts();
-
-  const fullPosts = await Promise.all(
-    posts.map((p) => getPostBySlug(p.slug))
-  );
+  const posts = await getAllPostsWithContent();
 
   const lastUpdated =
     posts[0]?.date ?? new Date().toISOString();
 
-  const entries = fullPosts
-    .filter((p): p is NonNullable<typeof p> => p !== null)
+  const entries = posts
     .map((post) => {
       const url = `${base}/blog/${post.slug}`;
       const published = new Date(post.date).toISOString();
-      const summary = post.description || post.content.slice(0, 280);
+      const summary = buildFeedSummary(post.description, post.content);
       const categories = (post.tags ?? [])
         .map((t) => `<category term="${escapeXml(t)}" />`)
         .join("");

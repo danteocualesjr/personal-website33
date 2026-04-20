@@ -49,6 +49,11 @@ async function readPostFiles(): Promise<string[]> {
 }
 
 export async function getAllPosts(): Promise<PostMeta[]> {
+  const posts = await getAllPostsWithContent();
+  return posts.map(({ content: _content, ...meta }) => meta);
+}
+
+export async function getAllPostsWithContent(): Promise<Post[]> {
   const files = await readPostFiles();
   const posts = await Promise.all(
     files.map(async (file) => {
@@ -63,7 +68,8 @@ export async function getAllPosts(): Promise<PostMeta[]> {
         date: (data.date as string) ?? new Date().toISOString(),
         tags: (data.tags as string[]) ?? [],
         readingTimeMinutes: estimateReadingTime(content),
-      } satisfies PostMeta;
+        content,
+      } satisfies Post;
     })
   );
   return posts.sort(
