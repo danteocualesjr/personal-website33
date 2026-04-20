@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { siteConfig } from "@/content/site";
 import { getPostBySlug } from "@/lib/posts";
+import { formatContentDate } from "@/lib/dates";
 
 export const alt = "Blog post";
 export const size = {
@@ -19,7 +20,7 @@ export default async function BlogPostOgImage({
   const title = post?.title ?? "Writing";
   const description = post?.description ?? "";
   const date = post
-    ? new Date(post.date).toLocaleDateString("en-US", {
+    ? formatContentDate(post.date, {
         year: "numeric",
         month: "long",
         day: "numeric",
