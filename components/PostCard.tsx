@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { PostMeta } from "@/lib/posts";
+import { formatContentDate } from "@/lib/dates";
 
 export function PostCard({ post }: { post: PostMeta }) {
-  const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
+  const formattedDate = formatContentDate(post.date, {
     year: "numeric",
     month: "short",
     day: "numeric",

@@ -9,6 +9,7 @@ import rehypePrettyCode, {
 import { Container } from "@/components/Container";
 import { PageTransition } from "@/components/PageTransition";
 import { PostNav } from "@/components/PostNav";
+import { formatContentDate } from "@/lib/dates";
 import { getAdjacentPosts, getAllPosts, getPostBySlug } from "@/lib/posts";
 
 const prettyCodeOptions: RehypePrettyCodeOptions = {
@@ -45,6 +46,11 @@ export default async function PostPage({
   const post = await getPostBySlug(slug);
   if (!post) notFound();
   const { prev, next } = await getAdjacentPosts(slug);
+  const formattedDate = formatContentDate(post.date, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <PageTransition>
@@ -59,13 +65,7 @@ export default async function PostPage({
 
         <header className="mt-6 border-b border-border pb-6">
           <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
-            <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </time>
+            <time dateTime={post.date}>{formattedDate}</time>
             <span aria-hidden="true">·</span>
             <span>{post.readingTimeMinutes} min read</span>
           </div>
