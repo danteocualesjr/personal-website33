@@ -17,6 +17,16 @@ const prettyCodeOptions: RehypePrettyCodeOptions = {
   defaultLang: "plaintext",
 };
 
+function formatPostDate(value: string): string {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return "Date unavailable";
+  return parsed.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export async function generateStaticParams() {
   const posts = await getAllPosts();
   return posts.map((p) => ({ slug: p.slug }));
@@ -60,11 +70,7 @@ export default async function PostPage({
         <header className="mt-6 border-b border-border pb-6">
           <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
             <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              {formatPostDate(post.date)}
             </time>
             <span aria-hidden="true">·</span>
             <span>{post.readingTimeMinutes} min read</span>

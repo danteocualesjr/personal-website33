@@ -13,6 +13,11 @@ function escapeXml(value: string): string {
     .replace(/'/g, "&apos;");
 }
 
+function toIsoDate(value: string): string {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
+}
+
 export async function GET() {
   const base = siteConfig.metadata.url.replace(/\/$/, "");
   const posts = await getAllPosts();
@@ -28,7 +33,7 @@ export async function GET() {
     .filter((p): p is NonNullable<typeof p> => p !== null)
     .map((post) => {
       const url = `${base}/blog/${post.slug}`;
-      const published = new Date(post.date).toISOString();
+      const published = toIsoDate(post.date);
       const summary = post.description || post.content.slice(0, 280);
       const categories = (post.tags ?? [])
         .map((t) => `<category term="${escapeXml(t)}" />`)
@@ -53,7 +58,7 @@ export async function GET() {
   <link href="${base}" />
   <link rel="self" href="${base}/feed.xml" type="application/atom+xml" />
   <id>${base}/</id>
-  <updated>${new Date(lastUpdated).toISOString()}</updated>
+  <updated>${toIsoDate(lastUpdated)}</updated>
   <author>
     <name>${escapeXml(siteConfig.name)}</name>
     <email>${escapeXml(siteConfig.email)}</email>
