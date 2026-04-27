@@ -19,6 +19,18 @@ const POSTS_DIR = path.join(process.cwd(), "content", "posts");
 
 const WORDS_PER_MINUTE = 225;
 
+function normalizeTags(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.filter(
+      (tag): tag is string => typeof tag === "string" && tag.trim().length > 0
+    );
+  }
+  if (typeof value === "string" && value.trim().length > 0) {
+    return [value];
+  }
+  return [];
+}
+
 function countWords(text: string): number {
   const stripped = text
     // Drop fenced code blocks
@@ -61,7 +73,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
         title: (data.title as string) ?? slug,
         description: (data.description as string) ?? "",
         date: (data.date as string) ?? new Date().toISOString(),
-        tags: (data.tags as string[]) ?? [],
+        tags: normalizeTags(data.tags),
         readingTimeMinutes: estimateReadingTime(content),
       } satisfies PostMeta;
     })
@@ -98,7 +110,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     title: (data.title as string) ?? slug,
     description: (data.description as string) ?? "",
     date: (data.date as string) ?? new Date().toISOString(),
-    tags: (data.tags as string[]) ?? [],
+    tags: normalizeTags(data.tags),
     readingTimeMinutes: estimateReadingTime(content),
     content,
   };

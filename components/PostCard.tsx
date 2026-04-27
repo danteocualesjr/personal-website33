@@ -3,11 +3,17 @@ import { ArrowRight } from "lucide-react";
 import type { PostMeta } from "@/lib/posts";
 
 export function PostCard({ post }: { post: PostMeta }) {
-  const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  const parsedDate = new Date(post.date);
+  const formattedDate = Number.isNaN(parsedDate.getTime())
+    ? "Date TBD"
+    : parsedDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+  const dateTime = Number.isNaN(parsedDate.getTime())
+    ? undefined
+    : parsedDate.toISOString();
 
   return (
     <Link
@@ -16,7 +22,7 @@ export function PostCard({ post }: { post: PostMeta }) {
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-muted-foreground">
-          <time dateTime={post.date}>{formattedDate}</time>
+          <time dateTime={dateTime}>{formattedDate}</time>
           <span aria-hidden="true">·</span>
           <span>{post.readingTimeMinutes} min read</span>
         </div>

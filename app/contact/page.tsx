@@ -5,6 +5,9 @@ import { ContactForm } from "@/components/ContactForm";
 import { siteConfig } from "@/content/site";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/contact",
+  },
   title: "Contact",
   description: `Get in touch with ${siteConfig.name}.`,
 };

@@ -7,12 +7,22 @@ export function ContactForm({ email }: { email: string }) {
   const [name, setName] = useState("");
   const [from, setFrom] = useState("");
   const [message, setMessage] = useState("");
+  const trimmedName = name.trim();
+  const trimmedFrom = from.trim();
+  const trimmedMessage = message.trim();
+  const canSubmit =
+    trimmedName.length > 0 &&
+    trimmedFrom.length > 0 &&
+    trimmedMessage.length >= 10;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Hello from ${name || "your site"}`);
+    if (!canSubmit) return;
+    const subject = encodeURIComponent(
+      `Hello from ${trimmedName || "your site"}`
+    );
     const body = encodeURIComponent(
-      `${message}\n\n— ${name}${from ? ` (${from})` : ""}`
+      `${trimmedMessage}\n\n— ${trimmedName}${trimmedFrom ? ` (${trimmedFrom})` : ""}`
     );
     window.location.href = `mailto:${encodeURIComponent(
       email
@@ -55,6 +65,7 @@ export function ContactForm({ email }: { email: string }) {
         <textarea
           name="message"
           required
+          minLength={10}
           rows={6}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -63,7 +74,8 @@ export function ContactForm({ email }: { email: string }) {
       </label>
       <button
         type="submit"
-        className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:opacity-90"
+        disabled={!canSubmit}
+        className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
       >
         Send message
         <Send className="h-4 w-4" />

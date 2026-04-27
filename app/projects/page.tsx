@@ -5,6 +5,9 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { siteConfig } from "@/content/site";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/projects",
+  },
   title: "Projects",
   description: "A selection of things I've built.",
 };

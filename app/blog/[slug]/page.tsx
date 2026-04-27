@@ -17,6 +17,16 @@ const prettyCodeOptions: RehypePrettyCodeOptions = {
   defaultLang: "plaintext",
 };
 
+function formatPostDate(value: string): string {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return "Date unavailable";
+  return parsed.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export async function generateStaticParams() {
   const posts = await getAllPosts();
   return posts.map((p) => ({ slug: p.slug }));
@@ -30,9 +40,25 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
+  const postUrl = `/blog/${post.slug}`;
   return {
     title: post.title,
     description: post.description,
+    alternates: {
+      canonical: postUrl,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      url: postUrl,
+      publishedTime: post.date,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+    },
   };
 }
 
@@ -60,11 +86,7 @@ export default async function PostPage({
         <header className="mt-6 border-b border-border pb-6">
           <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
             <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              {formatPostDate(post.date)}
             </time>
             <span aria-hidden="true">·</span>
             <span>{post.readingTimeMinutes} min read</span>

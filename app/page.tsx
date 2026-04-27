@@ -9,7 +9,7 @@ import { getAllPosts } from "@/lib/posts";
 
 export default async function HomePage() {
   const featured = siteConfig.projects.filter((p) => p.featured).slice(0, 3);
-  
+
   const posts = (await getAllPosts()).slice(0, 3);
 
   return (
@@ -42,24 +42,26 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="py-12">
-          <div className="flex items-baseline justify-between">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Featured projects
-            </h2>
-            <Link
-              href="/projects"
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              All projects →
-            </Link>
-          </div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {featured.map((p) => (
-              <ProjectCard key={p.title} project={p} />
-            ))}
-          </div>
-        </section>
+        {featured.length > 0 && (
+          <section className="py-12">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Featured projects
+              </h2>
+              <Link
+                href="/projects"
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
+                All projects →
+              </Link>
+            </div>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              {featured.map((p) => (
+                <ProjectCard key={p.title} project={p} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {posts.length > 0 && (
           <section className="py-12">

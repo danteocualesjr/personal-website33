@@ -4,6 +4,9 @@ import { PageTransition } from "@/components/PageTransition";
 import { siteConfig } from "@/content/site";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/about",
+  },
   title: "About",
   description: `About ${siteConfig.name}.`,
 };
