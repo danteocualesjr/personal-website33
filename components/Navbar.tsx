@@ -12,6 +12,10 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
     if (!mobileOpen) return;
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
