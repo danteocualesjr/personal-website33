@@ -38,6 +38,8 @@ export function ThemeSwitcher() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   useEffect(() => setMounted(true), []);
 
@@ -60,10 +62,66 @@ export function ThemeSwitcher() {
   }, [open]);
 
   const current = mounted ? theme : "minimal";
+  const currentIndex = themes.findIndex((t) => t.id === current);
+
+  useEffect(() => {
+    if (!open) return;
+    const focusIndex = currentIndex >= 0 ? currentIndex : 0;
+    const frame = window.requestAnimationFrame(() => {
+      itemRefs.current[focusIndex]?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [open, currentIndex]);
+
+  const handleMenuKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setOpen(false);
+      triggerRef.current?.focus();
+      return;
+    }
+
+    const items = itemRefs.current.filter(
+      (item): item is HTMLButtonElement => item !== null
+    );
+    if (items.length === 0) return;
+
+    const activeIndex = items.findIndex((item) => item === document.activeElement);
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const nextIndex = activeIndex === -1 ? 0 : (activeIndex + 1) % items.length;
+      items[nextIndex]?.focus();
+      return;
+    }
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const nextIndex =
+        activeIndex === -1
+          ? items.length - 1
+          : (activeIndex - 1 + items.length) % items.length;
+      items[nextIndex]?.focus();
+      return;
+    }
+
+    if (e.key === "Home") {
+      e.preventDefault();
+      items[0]?.focus();
+      return;
+    }
+
+    if (e.key === "End") {
+      e.preventDefault();
+      items[items.length - 1]?.focus();
+      return;
+    }
+  };
 
   return (
     <div className="relative" ref={menuRef}>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label="Change theme"
@@ -77,12 +135,17 @@ export function ThemeSwitcher() {
       {open && (
         <div
           role="menu"
+          aria-label="Theme options"
+          onKeyDown={handleMenuKeyDown}
           className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-md border border-border bg-card text-card-foreground shadow-card"
         >
-          {themes.map((t) => {
+          {themes.map((t, index) => {
             const active = current === t.id;
             return (
               <button
+                ref={(el) => {
+                  itemRefs.current[index] = el;
+                }}
                 key={t.id}
                 role="menuitemradio"
                 aria-checked={active}
