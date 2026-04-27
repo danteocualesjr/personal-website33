@@ -40,9 +40,25 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
+  const postUrl = `/blog/${post.slug}`;
   return {
     title: post.title,
     description: post.description,
+    alternates: {
+      canonical: postUrl,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      url: postUrl,
+      publishedTime: post.date,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+    },
   };
 }
 
