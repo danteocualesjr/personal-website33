@@ -142,6 +142,10 @@ button {
   border-radius: 0.25rem;
 }
 
+main:focus-visible {
+  outline: none;
+}
+
 /* Respect users who prefer less motion */
 @media (prefers-reduced-motion: reduce) {
   *,
