@@ -19,6 +19,20 @@ export default function NotFound() {
       >
         Back home
       </Link>
+      <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+        <Link href="/about" className="hover:text-foreground">
+          About
+        </Link>
+        <Link href="/projects" className="hover:text-foreground">
+          Projects
+        </Link>
+        <Link href="/blog" className="hover:text-foreground">
+          Blog
+        </Link>
+        <Link href="/contact" className="hover:text-foreground">
+          Contact
+        </Link>
+      </div>
     </Container>
   );
 }
