@@ -61,9 +61,9 @@ export const siteConfig: SiteConfig = {
   email: "hello@example.com",
   resumeUrl: "/resume.pdf",
   socials: [
-    { label: "GitHub", href: "https://github.com/yourhandle" },
-    { label: "Twitter / X", href: "https://x.com/yourhandle" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/yourhandle" },
+    { label: "GitHub", href: "https://github.com/danteocualesjr" },
+    { label: "Twitter / X", href: "https://x.com/danteocualesjr" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/danteocualesjr/" },
   ],
   skills: [
     "TypeScript",
@@ -83,7 +83,7 @@ export const siteConfig: SiteConfig = {
         "A short, punchy description of what this project does and why it matters. Keep it to one or two sentences.",
       tags: ["Next.js", "TypeScript", "Tailwind"],
       href: "https://example.com/project-one",
-      repo: "https://github.com/yourhandle/project-one",
+      repo: "https://github.com/danteocualesjr/project-one",
       featured: true,
     },
     {
@@ -91,7 +91,7 @@ export const siteConfig: SiteConfig = {
       description:
         "Another great thing you built. Mention the problem it solves and the impact it had.",
       tags: ["React", "Node.js", "PostgreSQL"],
-      repo: "https://github.com/yourhandle/project-two",
+      repo: "https://github.com/danteocualesjr/project-two",
       featured: true,
     },
     {
@@ -135,7 +135,7 @@ export const siteConfig: SiteConfig = {
     title: "Dante — Software Engineer & Designer",
     description:
       "Personal site of Dante. Portfolio, writing, and a bit about me.",
-    url: "https://yourdomain.com",
+    url: "https://nativestack.ai",
   },
 };
 
