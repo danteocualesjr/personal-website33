@@ -48,13 +48,13 @@ export type SiteConfig = {
 };
 
 export const siteConfig: SiteConfig = {
-  name: "Your Name",
+  name: "Dante",
   role: "Software Engineer & Designer",
   location: "Earth",
   shortBio:
     "I build thoughtful software at the intersection of design and engineering.",
   longBio: [
-    "Hi, I'm Your Name. I'm a software engineer and designer based in Earth. I enjoy turning complex problems into clean, intuitive products.",
+    "Hi, I'm Dante. I'm a software engineer and designer based in Earth. I enjoy turning complex problems into clean, intuitive products.",
     "When I'm not shipping code, you'll find me reading, hiking, or tinkering with side projects. I'm always curious about new tools, ideas, and ways of thinking.",
     "This site is a collection of my work, writing, and a bit about me. Feel free to poke around and reach out.",
   ],
@@ -132,9 +132,9 @@ export const siteConfig: SiteConfig = {
     },
   ],
   metadata: {
-    title: "Your Name — Software Engineer & Designer",
+    title: "Dante — Software Engineer & Designer",
     description:
-      "Personal site of Your Name. Portfolio, writing, and a bit about me.",
+      "Personal site of Dante. Portfolio, writing, and a bit about me.",
     url: "https://yourdomain.com",
   },
 };
