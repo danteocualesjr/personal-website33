@@ -59,7 +59,7 @@ const personJsonLd = {
   jobTitle: siteConfig.role,
   description: siteConfig.shortBio,
   url: siteConfig.metadata.url,
-  email: `mailto:${siteConfig.email}`,
+  email: siteConfig.email,
   address: {
     "@type": "PostalAddress",
     addressLocality: siteConfig.location,
