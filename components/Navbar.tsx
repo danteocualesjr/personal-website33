@@ -26,6 +26,15 @@ export function Navbar() {
     return () => document.removeEventListener("keydown", handleKey);
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileOpen]);
+
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     // Match the exact path or a nested path under it, but avoid

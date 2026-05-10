@@ -45,7 +45,7 @@ export async function GET() {
     <id>${url}</id>
     <updated>${published}</updated>
     <published>${published}</published>
-    <summary type="html">${escapeXml(summary)}</summary>
+    <summary type="text">${escapeXml(summary)}</summary>
     ${categories}
   </entry>`;
     })
