@@ -127,6 +127,7 @@ export function ThemeSwitcher() {
         aria-label="Change theme"
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-controls="theme-switcher-menu"
         className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground shadow-card hover:bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <Palette className="h-4 w-4" />
@@ -134,6 +135,7 @@ export function ThemeSwitcher() {
       </button>
       {open && (
         <div
+          id="theme-switcher-menu"
           role="menu"
           aria-label="Theme options"
           onKeyDown={handleMenuKeyDown}

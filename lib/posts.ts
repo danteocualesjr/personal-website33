@@ -60,27 +60,37 @@ async function readPostFiles(): Promise<string[]> {
   }
 }
 
-export async function getAllPosts(): Promise<PostMeta[]> {
-  const files = await readPostFiles();
-  const posts = await Promise.all(
-    files.map(async (file) => {
-      const fullPath = path.join(POSTS_DIR, file);
-      const raw = await fs.readFile(fullPath, "utf8");
-      const { data, content } = matter(raw);
-      const slug = file.replace(/\.(mdx|md)$/, "");
-      return {
-        slug,
-        title: (data.title as string) ?? slug,
-        description: (data.description as string) ?? "",
-        date: (data.date as string) ?? new Date().toISOString(),
-        tags: normalizeTags(data.tags),
-        readingTimeMinutes: estimateReadingTime(content),
-      } satisfies PostMeta;
-    })
-  );
+function sortPostsNewestFirst<T extends PostMeta>(posts: T[]): T[] {
   return posts.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
+}
+
+async function loadPostFromFile(file: string): Promise<Post> {
+  const fullPath = path.join(POSTS_DIR, file);
+  const raw = await fs.readFile(fullPath, "utf8");
+  const { data, content } = matter(raw);
+  const slug = file.replace(/\.(mdx|md)$/, "");
+  return {
+    slug,
+    title: (data.title as string) ?? slug,
+    description: (data.description as string) ?? "",
+    date: (data.date as string) ?? new Date().toISOString(),
+    tags: normalizeTags(data.tags),
+    readingTimeMinutes: estimateReadingTime(content),
+    content,
+  };
+}
+
+export async function getAllPostsFull(): Promise<Post[]> {
+  const files = await readPostFiles();
+  const posts = await Promise.all(files.map((file) => loadPostFromFile(file)));
+  return sortPostsNewestFirst(posts);
+}
+
+export async function getAllPosts(): Promise<PostMeta[]> {
+  const full = await getAllPostsFull();
+  return full.map(({ content: _c, ...meta }) => meta);
 }
 
 export async function getAdjacentPosts(slug: string): Promise<{
@@ -101,17 +111,5 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   const files = await readPostFiles();
   const file = files.find((f) => f.replace(/\.(mdx|md)$/, "") === slug);
   if (!file) return null;
-
-  const fullPath = path.join(POSTS_DIR, file);
-  const raw = await fs.readFile(fullPath, "utf8");
-  const { data, content } = matter(raw);
-  return {
-    slug,
-    title: (data.title as string) ?? slug,
-    description: (data.description as string) ?? "",
-    date: (data.date as string) ?? new Date().toISOString(),
-    tags: normalizeTags(data.tags),
-    readingTimeMinutes: estimateReadingTime(content),
-    content,
-  };
+  return loadPostFromFile(file);
 }

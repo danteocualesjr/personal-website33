@@ -1,5 +1,5 @@
 import { siteConfig } from "@/content/site";
-import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { getAllPostsFull } from "@/lib/posts";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -20,17 +20,12 @@ function toIsoDate(value: string): string {
 
 export async function GET() {
   const base = siteConfig.metadata.url.replace(/\/$/, "");
-  const posts = await getAllPosts();
-
-  const fullPosts = await Promise.all(
-    posts.map((p) => getPostBySlug(p.slug))
-  );
+  const fullPosts = await getAllPostsFull();
 
   const lastUpdated =
-    posts[0]?.date ?? new Date().toISOString();
+    fullPosts[0]?.date ?? new Date().toISOString();
 
   const entries = fullPosts
-    .filter((p): p is NonNullable<typeof p> => p !== null)
     .map((post) => {
       const url = `${base}/blog/${post.slug}`;
       const published = toIsoDate(post.date);
