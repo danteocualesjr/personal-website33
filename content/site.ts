@@ -48,22 +48,22 @@ export type SiteConfig = {
 };
 
 export const siteConfig: SiteConfig = {
-  name: "Your Name",
+  name: "Dante",
   role: "Software Engineer & Designer",
   location: "Earth",
   shortBio:
     "I build thoughtful software at the intersection of design and engineering.",
   longBio: [
-    "Hi, I'm Your Name. I'm a software engineer and designer based in Earth. I enjoy turning complex problems into clean, intuitive products.",
+    "Hi, I'm Dante. I'm a software engineer and designer based in Earth. I enjoy turning complex problems into clean, intuitive products.",
     "When I'm not shipping code, you'll find me reading, hiking, or tinkering with side projects. I'm always curious about new tools, ideas, and ways of thinking.",
     "This site is a collection of my work, writing, and a bit about me. Feel free to poke around and reach out.",
   ],
   email: "hello@example.com",
   resumeUrl: "/resume.pdf",
   socials: [
-    { label: "GitHub", href: "https://github.com/yourhandle" },
-    { label: "Twitter / X", href: "https://x.com/yourhandle" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/yourhandle" },
+    { label: "GitHub", href: "https://github.com/danteocualesjr" },
+    { label: "Twitter / X", href: "https://x.com/danteocualesjr" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/danteocualesjr/" },
   ],
   skills: [
     "TypeScript",
@@ -83,7 +83,7 @@ export const siteConfig: SiteConfig = {
         "A short, punchy description of what this project does and why it matters. Keep it to one or two sentences.",
       tags: ["Next.js", "TypeScript", "Tailwind"],
       href: "https://example.com/project-one",
-      repo: "https://github.com/yourhandle/project-one",
+      repo: "https://github.com/danteocualesjr/project-one",
       featured: true,
     },
     {
@@ -91,7 +91,7 @@ export const siteConfig: SiteConfig = {
       description:
         "Another great thing you built. Mention the problem it solves and the impact it had.",
       tags: ["React", "Node.js", "PostgreSQL"],
-      repo: "https://github.com/yourhandle/project-two",
+      repo: "https://github.com/danteocualesjr/project-two",
       featured: true,
     },
     {
@@ -132,10 +132,10 @@ export const siteConfig: SiteConfig = {
     },
   ],
   metadata: {
-    title: "Your Name — Software Engineer & Designer",
+    title: "Dante — Software Engineer & Designer",
     description:
-      "Personal site of Your Name. Portfolio, writing, and a bit about me.",
-    url: "https://yourdomain.com",
+      "Personal site of Dante. Portfolio, writing, and a bit about me.",
+    url: "https://nativestack.ai",
   },
 };
 
