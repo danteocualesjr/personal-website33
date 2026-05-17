@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { navLinks, siteConfig } from "@/content/site";
 import { ThemeSwitcher } from "./ThemeSwitcher";
@@ -10,6 +10,7 @@ import { ThemeSwitcher } from "./ThemeSwitcher";
 export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -33,6 +34,14 @@ export function Navbar() {
     return () => {
       document.body.style.overflow = previousOverflow;
     };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const frame = window.requestAnimationFrame(() => {
+      firstMobileLinkRef.current?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [mobileOpen]);
 
   const isActive = (href: string) => {
@@ -98,11 +107,12 @@ export function Navbar() {
           className="border-t border-border bg-background md:hidden"
         >
           <div className="mx-auto flex max-w-5xl flex-col px-6 py-3">
-            {navLinks.map((link) => {
+            {navLinks.map((link, index) => {
               const active = isActive(link.href);
               return (
                 <Link
                   key={link.href}
+                  ref={index === 0 ? firstMobileLinkRef : undefined}
                   href={link.href}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setMobileOpen(false)}
